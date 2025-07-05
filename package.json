@@ -2,7 +2,7 @@
   "name": "",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "page.js",
   "type": "module",
   "license": "AGPL-version-3.0",
   "private": false,
@@ -22,16 +22,7 @@
     "email": "",
     "url": ""
   },
-  "contributors": [],
-  "scripts": {
-    "dev": "",
-    "test": "",
-    "clean": "rd /s /q dist",
-    "compile": "npx tsc",
-    "copy-assets": "robocopy ./ dist/ /xf tsconfig.json",
-    "copy-files": "robocopy ./src/ dist/ /E",
-    "build": "npm run clean && npm run compile && npm run copy-assets && npm run copy-files"
-  },
+  "contributors": ["Mishal"],
   "devDependencies": {
     "@types/chrome": "^0.0.320",
     "@types/node": "^22.15.17",
