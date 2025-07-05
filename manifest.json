@@ -1,0 +1,12 @@
+{
+    "manifest_version" : 3,
+    "name" : "Wordle extension",
+    "description" : "extension to cheat at wordle",
+    "version" : "1.0",
+    "action" : {},
+    "background" : {
+        "service_worker" : "src/code/index.js",
+        "type" : "module"
+    },
+    "permissions" : ["scripting", "activeTab"]
+}
