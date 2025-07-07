@@ -3,7 +3,12 @@
     "name" : "Wordle extension",
     "description" : "extension to cheat at wordle",
     "version" : "1.0",
-    "action" : {},
+    "action" : {
+    },
+    "web_accessible_resources" : [
+        {"resources": ["src/code/solutions.txt"],
+        "matches": ["<all_urls>"]}
+    ],
     "background" : {
         "service_worker" : "src/code/index.js",
         "type" : "module"
