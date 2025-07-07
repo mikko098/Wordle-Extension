@@ -110,10 +110,6 @@ function addButton(word_list, answer_list) {
         }
     }
 
-
-    console.log("word list:", word_list);
-    console.log("answer list:", answer_list);
-
     const rows = document.getElementsByClassName("Row-module_row__pwpBq")
     const map = { correct: 'G', present: 'Y', absent: 'N' };
     const information = [];
@@ -140,31 +136,38 @@ function addButton(word_list, answer_list) {
         firstGuess = false
         let guess = answerPermPair[0]
         let perm = answerPermPair[1]
+        if (perm === "GGGGG")
+            return "already solved"
         answer_list = newList(guess, perm, answer_list)
     })
-
-
 
     return nextGuess(word_list, answer_list, firstGuess)
 }
 
-chrome.action.onClicked.addListener((tab) => {
-    async function findBestWord() {
-        async function loadWordList(url) {
-            const response = await fetch(chrome.runtime.getURL(url));
-            const data = await response.text();
-            const solutions = data.split("\r\n");
-            return solutions;
-        }
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === "inject") {
+    (async () => {
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-        const word_list = await loadWordList("src/code/wordlist.txt");
-        const answer_list = await loadWordList("src/code/solutionlist.txt");
+      async function loadWordList(url) {
+        const response = await fetch(chrome.runtime.getURL(url));
+        const data = await response.text();
+        return data.split("\r\n");
+      }
 
-        chrome.scripting.executeScript({
-            target: {tabId: tab.id || 0}, 
-            func: addButton,
-            args: [word_list, answer_list]
-        }).then(data => console.log(data[0]["result"]));
-    }
-    findBestWord()
-})
+      const word_list = await loadWordList("src/code/wordlist.txt");
+      const answer_list = await loadWordList("src/code/solutionlist.txt");
+
+      const [{ result }] = await chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: addButton,
+        args: [word_list, answer_list],
+      });
+
+      sendResponse({ suggestedWord: result });
+    })();
+
+    return true;
+  }
+});
+

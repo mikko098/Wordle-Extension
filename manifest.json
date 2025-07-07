@@ -4,6 +4,7 @@
     "description" : "extension to cheat at wordle",
     "version" : "1.0",
     "action" : {
+        "default_popup" : "src/popup/box.html"
     },
     "web_accessible_resources" : [
         {"resources": ["src/code/solutions.txt"],
